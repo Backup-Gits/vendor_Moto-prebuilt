@@ -3,6 +3,8 @@ include $(CLEAR_VARS)
 
 LOCAL_PATH := vendor/prebuilt
 
+ifneq ($(MOTOROLA_DEVICE),true)
+ifeq ($(MOTO_DOLBY),true)
 PRODUCT_COPY_FILES += \
 $(LOCAL_PATH)/dolby/etc/sysconfig/hiddenapi-whitelist-com.motorola.dolby.dolbyui.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/sysconfig/hiddenapi-whitelist-com.motorola.dolby.dolbyui.xml \
 		$(LOCAL_PATH)/dolby/etc/permissions/com.motorola.dolby.dolbyui.features.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/com.motorola.dolby.dolbyui.features.xml \
@@ -26,8 +28,52 @@ $(LOCAL_PATH)/dolby/etc/sysconfig/hiddenapi-whitelist-com.motorola.dolby.dolbyui
 		$(LOCAL_PATH)/dolby/vendor/lib64/vendor.dolby.hardware.dms@1.0.so:$(TARGET_COPY_OUT_VENDOR)/lib64/vendor.dolby.hardware.dms@1.0.so \
                 $(LOCAL_PATH)/dolby/vendor/lib64/libdlbdsservice_ds1se.so:$(TARGET_COPY_OUT_VENDOR)/lib64/libdlbdsservice_ds1se.so \
 
-
-# dolby services
+# Moto Dolby
 PRODUCT_PACKAGES += \
 daxService \
 MotoDolbyV3
+
+endif
+endif
+
+ifneq ($(MOTOROLA_DEVICE),true)
+ifeq ($(MOTO_MAX),true)
+PRODUCT_PACKAGES += \
+MotoWaves \
+WavesService
+
+# Properties
+-include $(LOCAL_PATH)/max.mk
+
+# system
+PRODUCT_COPY_FILES += \
+$(LOCAL_PATH)/max/etc/sysconfig/hiddenapi-whitelist-com.motorola.motowaves.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/sysconfig/hiddenapi-whitelist-com.motorola.motowaves.xml \
+$(LOCAL_PATH)/max/etc/permissions/com.motorola.motowaves.features.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/com.motorola.motowaves.features.xml \
+$(LOCAL_PATH)/max/etc/permissions/privapp-permissions-com.waves.maxxservice.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/privapp-permissions-com.waves.maxxservice.xml \
+
+#vendor
+PRODUCT_COPY_FILES += \
+$(LOCAL_PATH)/max/vendor/etc/maxx_conf.ini:$(TARGET_COPY_OUT_VENDOR)/etc/maxx_conf.ini \
+$(LOCAL_PATH)/max/vendor/etc/maxx_default.mps:$(TARGET_COPY_OUT_VENDOR)/etc/maxx_default.mps \
+
+#vendor lib
+PRODUCT_COPY_FILES +=\
+$(LOCAL_PATH)/max/vendor/lib/libandroidaudioeffect_Oreo.so:$(TARGET_COPY_OUT_VENDOR)/lib/libandroidaudioeffect_Oreo.so \
+$(LOCAL_PATH)/max/vendor/lib/libmaxxaudioeffectapi.so:$(TARGET_COPY_OUT_VENDOR)/lib/libmaxxaudioeffectapi.so \
+$(LOCAL_PATH)/max/vendor/lib/libmaxxeffectwrapper.so:$(TARGET_COPY_OUT_VENDOR)/lib/libmaxxeffectwrapper.so \
+$(LOCAL_PATH)/max/vendor/lib/libAndroidAlgSys.so:$(TARGET_COPY_OUT_VENDOR)/lib/libAndroidAlgSys.so \
+$(LOCAL_PATH)/max/vendor/lib/libc++_shared.so:$(TARGET_COPY_OUT_VENDOR)/lib/libc++_shared.so \
+$(LOCAL_PATH)/max/vendor/lib/libMAM2_3-AlgFX-Coretex_A9.so:$(TARGET_COPY_OUT_VENDOR)/lib/libMAM2_3-AlgFX-Coretex_A9.so \
+$(LOCAL_PATH)/max/vendor/lib/soundfx/libmaxxeffect-cembedded.so:$(TARGET_COPY_OUT_VENDOR)/lib/soundfx/libmaxxeffect-cembedded.so \
+
+#vendor
+PRODUCT_COPY_FILES += \
+$(LOCAL_PATH)/max/lib/arm/libandroidaudioeffect_Oreo.so:$(TARGET_COPY_OUT_SYSTEM)/priv-app/WavesService/lib/arm/libandroidaudioeffect_Oreo.so \
+$(LOCAL_PATH)/max/lib/arm/libc++_shared.so:$(TARGET_COPY_OUT_SYSTEM)/priv-app/WavesService/lib/arm/libc++_shared.so \
+$(LOCAL_PATH)/max/lib/arm/libmaxxaudioeffectapi.so:$(TARGET_COPY_OUT_SYSTEM)/priv-app/WavesService/lib/arm/libmaxxaudioeffectapi.so \
+$(LOCAL_PATH)/max/lib/arm/libmaxxeffectwrapper.so:$(TARGET_COPY_OUT_SYSTEM)/priv-app/WavesService/lib/arm/libmaxxeffectwrapper.so \
+
+endif
+endif
+
+
