@@ -6,6 +6,7 @@ LOCAL_PATH := vendor/prebuilt
 ifneq ($(MOTOROLA_DEVICE),true)
 ifeq ($(MOTO_DOLBY),true)
 PRODUCT_COPY_FILES += \
+$(LOCAL_PATH)/media/media_codecs_dolby_audio.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_dolby_audio.xml \
 $(LOCAL_PATH)/dolby/etc/sysconfig/hiddenapi-whitelist-com.motorola.dolby.dolbyui.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/sysconfig/hiddenapi-whitelist-com.motorola.dolby.dolbyui.xml \
 		$(LOCAL_PATH)/dolby/etc/permissions/com.motorola.dolby.dolbyui.features.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/com.motorola.dolby.dolbyui.features.xml \
 			$(LOCAL_PATH)/dolby/etc/permissions/privapp-permissions-com.dolby.daxservice.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/privapp-permissions-com.dolby.daxservice.xml \
@@ -32,6 +33,10 @@ $(LOCAL_PATH)/dolby/etc/sysconfig/hiddenapi-whitelist-com.motorola.dolby.dolbyui
 PRODUCT_PACKAGES += \
 daxService \
 MotoDolbyV3
+
+BOARD_SEPOLICY_DIRS += $(LOCAL_PATH)/sepolicy/vendor
+
+DEVICE_MANIFEST_FILE += $(LOCAL_PATH)/motodolby.xml
 
 endif
 endif
@@ -76,4 +81,26 @@ $(LOCAL_PATH)/max/lib/arm/libmaxxeffectwrapper.so:$(TARGET_COPY_OUT_SYSTEM)/priv
 endif
 endif
 
+ifneq ($(MOTOROLA_DEVICE),false)
+# Moto Dolby
+PRODUCT_PACKAGES += \
+DsUI \
+Ds
+
+#dolby
+PRODUCT_COPY_FILES += \
+$(LOCAL_PATH)/bs/framework/dolby_ds.jar:$(TARGET_COPY_OUT_SYSTEM)/framework/dolby_ds.jar \
+$(LOCAL_PATH)/bs/etc/ds1-default.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/ds1-default.xml \
+$(LOCAL_PATH)/bs/etc/permissions/android.dolby.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/android.dolby.xml \
+$(LOCAL_PATH)/media/media_codecs_dolby_audio.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_dolby_audio.xml \
+
+#dolby vendor
+PRODUCT_COPY_FILES += \
+$(LOCAL_PATH)/bs/vendor/lib/libstagefright_soft_ddpdec.so:$(TARGET_COPY_OUT_VENDOR)/lib/libstagefright_soft_ddpdec.so \
+$(LOCAL_PATH)/bs/vendor/lib/libstagefright_soft_ac4dec.so:$(TARGET_COPY_OUT_VENDOR)/lib/libstagefright_soft_ac4dec.so \
+$(LOCAL_PATH)/bs/vendor/lib/soundfx/libdseffect.so:$(TARGET_COPY_OUT_VENDOR)/lib/soundfx/libdseffect.so \
+
+BOARD_SEPOLICY_DIRS += $(LOCAL_PATH)/sepolicy/vendor
+
+endif
 
